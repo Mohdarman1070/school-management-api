@@ -10,11 +10,18 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // MySQL Database Connection
+const mysql = require('mysql2');
+require('dotenv').config();
+
+// Parse the database URL
+const dbUrl = new URL(process.env.DB_URL);
+
 const db = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'qwerty@1234',
-    database: process.env.DB_NAME || 'school_management'
+    host: dbUrl.hostname,
+    user: dbUrl.username,
+    password: dbUrl.password,
+    database: dbUrl.pathname.replace("/", ""),
+    port: dbUrl.port
 });
 
 db.connect(err => {
@@ -22,8 +29,9 @@ db.connect(err => {
         console.error('Database connection failed:', err.stack);
         return;
     }
-    console.log('Connected to MySQL database.');
+    console.log('Connected to Railway MySQL database.');
 });
+
 
 // Add School API
 app.post('/addSchool', (req, res) => {
