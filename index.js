@@ -9,19 +9,13 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 
-// MySQL Database Connection
-
-
-
-// Parse the database URL
-const dbUrl = new URL(process.env.DB_URL);
-
+// Database Connection
 const db = mysql.createConnection({
-    host: dbUrl.hostname,
-    user: dbUrl.username,
-    password: dbUrl.password,
-    database: dbUrl.pathname.replace("/", ""),
-    port: dbUrl.port
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 db.connect(err => {
@@ -31,7 +25,6 @@ db.connect(err => {
     }
     console.log('Connected to Railway MySQL database.');
 });
-
 
 // Add School API
 app.post('/addSchool', (req, res) => {
@@ -83,5 +76,5 @@ app.get('/listSchools', (req, res) => {
 
 // Start Server
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
 });
