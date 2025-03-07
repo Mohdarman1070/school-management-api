@@ -10,8 +10,8 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // MySQL Database Connection
-const mysql = require('mysql2');
-require('dotenv').config();
+
+
 
 // Parse the database URL
 const dbUrl = new URL(process.env.DB_URL);
